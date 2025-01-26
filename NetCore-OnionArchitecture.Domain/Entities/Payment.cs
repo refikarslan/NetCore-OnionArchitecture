@@ -13,5 +13,7 @@ namespace NetCore_OnionArchitecture.Domain.Entities
         public int Amount { get; set; }
         public string PaymentMethod { get; set; }
         public string Status { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
     }
-}
+} 

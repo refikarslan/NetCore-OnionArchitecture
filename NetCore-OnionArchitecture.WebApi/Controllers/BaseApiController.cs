@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace NetCore_OnionArchitecture.WebApi.Controllers
 {
-
     [ApiController]
-    [Route("api/v{version}/[controller]")]
+    [Route("api/[controller]")]
+
     public abstract class BaseApiController : ControllerBase
     {
         private IMediator _mediator;

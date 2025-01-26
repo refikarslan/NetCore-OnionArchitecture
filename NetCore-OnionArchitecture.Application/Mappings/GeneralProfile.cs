@@ -1,4 +1,5 @@
-﻿using NetCore_OnionArchitecture.Domain.Entities;
+﻿using AutoMapper;
+using NetCore_OnionArchitecture.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace NetCore_OnionArchitecture.Application.Mappings
     public class GeneralProfile : Profile
     {
         #region Commands
-        CreateMap<CreateCustomerCommand, Customer>();
+      //  CreateMap<CreateCustomerCommand, Customer>();
            
         #endregion
     }

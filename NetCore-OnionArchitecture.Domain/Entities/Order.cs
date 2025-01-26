@@ -10,7 +10,7 @@ namespace NetCore_OnionArchitecture.Domain.Entities
     public class Order : Entity
     {
         public string Address { get; set; }
-        public DateTime OrderDate { get; set; }
+        public DateTime OrderDate { get; set; }  // sipariş zamanı otomatik olarak o zamanı alacak.
         public int UserId { get; set; }
         public int PaymentId { get; set; }
         public User User { get; set; }

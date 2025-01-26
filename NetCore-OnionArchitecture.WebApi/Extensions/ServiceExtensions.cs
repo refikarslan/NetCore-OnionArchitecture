@@ -1,19 +1,55 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace NetCore_OnionArchitecture.WebApi.Extensions
 {
     public static class ServiceExtensions
     {
-        public static void AddApiVersioningExtension(this IServiceCollection services)
+      
+        public static void AddJWTAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddApiVersioning(config =>
+            var jwtSettings = configuration.GetSection("JWTSettings");
+            var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
+
+            services.AddAuthentication(options =>
             {
-                config.DefaultApiVersion = new ApiVersion(1, 0);
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings["Issuer"],
+                    ValidAudience = jwtSettings["Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ClockSkew = TimeSpan.Zero
+                };
 
-                config.AssumeDefaultVersionWhenUnspecified = true;
-
-                config.ReportApiVersions = true;
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        context.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    },
+                    OnTokenValidated = context =>
+                    {
+                        // Token doğrulandıktan sonra yapılacak işlemler
+                        return Task.CompletedTask;
+                    }
+                };
             });
         }
+       
     }
 }
+
+
+
+

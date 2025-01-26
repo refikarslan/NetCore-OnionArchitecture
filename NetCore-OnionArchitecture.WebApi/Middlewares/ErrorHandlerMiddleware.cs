@@ -22,9 +22,10 @@ namespace NetCore_OnionArchitecture.WebApi.Middlewares
             catch(Exception error) 
             {
                 var response = context.Response;
-                response.ContentType = "application/json";  //döneceğim cevabı hangi türde döneceğimi belirlemiş oldum.Yanıtın JSON formatında olduğunu belirtir.
-                var responseModel = new Response<string>() { Success = false, Message= error?.Message };
+                response.ContentType = "application/json";  
+                var responseModel = new Response<string>() { Success = false, Message= "Bir hata oluştu. Lütfen tekrar deneyin." };
 
+                // Hata koduna göre HTTP yanıt kodunu ayarla
                 switch (error)
                 {
                     case Application.Exceptions.ApiException e:
@@ -49,8 +50,8 @@ namespace NetCore_OnionArchitecture.WebApi.Middlewares
                         break;
                 }
 
+                // JSON yanıtı
                 var result = JsonSerializer.Serialize(responseModel);
-
                 await response.WriteAsync(result);
             }
 

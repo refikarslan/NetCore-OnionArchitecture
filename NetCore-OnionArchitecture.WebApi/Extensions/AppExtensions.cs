@@ -7,6 +7,7 @@ namespace NetCore_OnionArchitecture.WebApi.Extensions
         public static void UseErrorHandlingMiddleware(this IApplicationBuilder app) 
         {
             app.UseMiddleware<ErrorHandlerMiddleware>();
+       
         }
     }
 }
